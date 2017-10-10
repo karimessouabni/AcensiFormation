@@ -1,6 +1,3 @@
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 /**
  * @author karim.essouabni
  *
@@ -49,13 +46,10 @@ public class ArrayList<E> implements List<E> {
 	}
 
 	private void checkIndex(int index) throws Exception {
-		if (index <0 || index > data.length)
+		if (index < 0 || index > data.length)
 			throw new Exception("faut index");
 	}
 
-	public void clear() {
-		
-	}
 
 	public E get(int index) throws Exception {
 		checkIndex(index);
@@ -64,10 +58,19 @@ public class ArrayList<E> implements List<E> {
 
 	public E remove(int index) throws Exception {
 		checkIndex(index);
-		return null;
+		E toRemove = get(index);
+		System.arraycopy(this.data, index + 1, this.data, index, size() - index - 1); // shift par rapport a
+		this.data[size() - 1] = null;
+		return toRemove;
 	}
 
-	public boolean remove(Object o) {
+	public boolean remove(Object o) throws Exception {
+		for (int i = 0; i < this.data.length; i++) {
+			if (o.equals(data[i])) {
+				remove(i);
+				return true;
+			}
+		}
 		return false;
 	}
 

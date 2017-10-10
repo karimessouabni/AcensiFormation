@@ -52,6 +52,46 @@ public class ArrayListTest extends TestCase {
 		tabDefault.add(3, "P3");
 		Assert.assertEquals(tabDefault.getData()[3], "P3");
 		
+	}
+	
+	@Test 
+	public void testGet() throws Exception{
+	ArrayList<String> tabDefault = new ArrayList<>();
+		
+		tabDefault.add("P0");
+		tabDefault.add("P1");
+		tabDefault.add("P2");
+		Assert.assertEquals(tabDefault.get(0), "P0");
+		Assert.assertEquals(tabDefault.get(1), "P1");
+		Assert.assertEquals(tabDefault.get(2), "P2");
+	}
+	
+	
+	@Test 
+	public void testRemove() throws Exception {
+	ArrayList<String> tabDefault = new ArrayList<>();
+		
+		tabDefault.add("P0");
+		tabDefault.add("P1");
+		tabDefault.add("P2");
+		tabDefault.remove(0); 
+		Assert.assertEquals(tabDefault.get(0), "P1");
+		Assert.assertEquals(tabDefault.get(2), null);
+		
+		
+	}
+	
+	@Test 
+	public void testRemoveObject() throws Exception {
+	ArrayList<String> tabDefault = new ArrayList<>();
+		
+		tabDefault.add("P0");
+		tabDefault.add("P1");
+		tabDefault.add("P2");
+		tabDefault.remove("P0"); 
+		Assert.assertEquals(tabDefault.get(0), "P1");
+		Assert.assertEquals(tabDefault.get(2), null);
+		
 		
 	}
 
