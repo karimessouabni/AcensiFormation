@@ -1,101 +1,90 @@
-import java.util.Collection;
-import java.util.Iterator;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
+/**
+ * @author karim.essouabni
+ *
+ * @param <E>
+ */
 public class ArrayList<E> implements List<E> {
 
+	private Object[] data;
+
+	public ArrayList() throws Exception {
+		this(10);
+	}
+
+	public ArrayList(int nbrElements) throws Exception {
+		if (nbrElements < 0)
+			throw new Exception("nbrElements <0");
+		data = new Object[nbrElements];
+
+	}
+
+	/*
+	 * Ajout de l'element e a la fin de la liste (non-Javadoc)
+	 * 
+	 * @see List#add(java.lang.Object)
+	 */
 	public boolean add(E e) {
-		// TODO Auto-generated method stub
-		return false;
+		ajusterTailleArray();
+		this.data[this.size()] = e;
+		return true;
 	}
 
-	public void add(int index, E element) {
-		// TODO Auto-generated method stub
-		
+	private void ajusterTailleArray() {
+		if (data.length < this.size() + 1) {
+			Object[] dataResized = new Object[data.length + data.length / 2];
+			System.arraycopy(data, 0, dataResized, 0, data.length);
+			this.data = dataResized;
+		}
 	}
 
-	public boolean addAll(Collection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
+	public void add(int index, E element) throws Exception {
+		checkIndex(index);
+		ajusterTailleArray();
+		System.arraycopy(this.data, index, this.data, index + 1, size() - index); // shift par rapport a
+		this.data[index] = element;
+
 	}
 
-	public boolean addAll(int index, Collection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
+	private void checkIndex(int index) throws Exception {
+		if (index <0 || index > data.length)
+			throw new Exception("faut index");
 	}
 
 	public void clear() {
-		// TODO Auto-generated method stub
 		
 	}
 
-	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+	public E get(int index) throws Exception {
+		checkIndex(index);
+		return (E) this.data[index];
 	}
 
-	public E get(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public E remove(int index) {
-		// TODO Auto-generated method stub
+	public E remove(int index) throws Exception {
+		checkIndex(index);
 		return null;
 	}
 
 	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public E set(int index, E element) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		int size = 0;
+		for (int i = 0; i < this.data.length; i++)
+			if (data[i] != null)
+				size++;
+		return size;
 	}
 
-	public List<E> subList(int fromIndex, int toIndex) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object[] getData() {
+		return data;
 	}
 
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setData(Object[] data) {
+		this.data = data;
 	}
 
 }
