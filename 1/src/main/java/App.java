@@ -41,6 +41,7 @@ public class App {
 		l.add("01");
 		l.add("02");
 		l.add(null);
+		l.add(01, "0002");
 		System.out.println(l);
 
 	}
