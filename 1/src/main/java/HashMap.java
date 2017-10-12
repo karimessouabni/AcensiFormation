@@ -19,9 +19,17 @@ public class HashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-		int hash = hash(key.hashCode());
-		int index = indexFor(hash);
+		if (key != null) {
+			int hash = hash(key.hashCode());
+			int index = indexFor(hash);
+			for (Bucket<K, V> entree = this.bucket[index]; entree != null; entree = entree.next) {
+				if (key.equals(entree.key)) {
+					return entree.value;
+				}
 
+			}
+
+		}
 		return null;
 	}
 
@@ -32,7 +40,7 @@ public class HashMap<K, V> implements Map<K, V> {
 		int bucketIndex = indexFor(hash);
 
 		Bucket<K, V> entree = this.bucket[bucketIndex];
-		// 1 chercher si la clé exite deja dans le bucket associé 
+		// 1 chercher si la clé exite deja dans le bucket associé
 		while (entree != null) {
 			// element de
 			// la linkedlist
@@ -43,21 +51,23 @@ public class HashMap<K, V> implements Map<K, V> {
 			}
 			entree = entree.next; // next element of the Bucket
 		}
-		 entree = this.bucket[bucketIndex];
+		entree = this.bucket[bucketIndex];
 		// 2 ajout d'une nouvelle entrée(K,V) dans le Bucket concerné
-		this.bucket[bucketIndex] = new Bucket<K, V>(key, value, entree); // decalage du Bucket avec la nouvel (K,V) ajouter au debut 
-		if (this.size++ >= (int) (16 * loadVariance)) {
+		this.bucket[bucketIndex] = new Bucket<K, V>(key, value, entree, hash); // decalage du Bucket avec la nouvel
+																				// (K,V)
+		// ajouter au debut
+		if (this.size++ >= (int) (this.bucket.length * loadVariance)) {
 
 			Bucket<K, V>[] newBucket = new Bucket[this.bucket.length * 2];// doubler la taille du Bucket
 			for (int i = 0; i < this.bucket.length; i++) { // parcourir l'ancien bucket pour le transferer dans le
 															// nouveau
 				Bucket<K, V> newElemBucket = this.bucket[i]; // transferer le premier element du Buket
 				if (newElemBucket != null) {
-//					this.bucket[i] = null;
+					// this.bucket[i] = null;
 					do {
 						Bucket<K, V> next = newElemBucket.next;
-						int hashKey = hash(this.bucket[i].key.hashCode());
-						int bucketIndx = indexFor(hashKey, newBucket.length); // nouveau index pour le nouveau Bucket
+						int bucketIndx = indexFor(newElemBucket.hash, newBucket.length); // nouveau index pour le
+																							// nouveau Bucket
 						newElemBucket.next = newBucket[i]; // decalage de la valeur deja existante ( decalage du null
 															// pour le premier passage) -> la linkedList doit pointer
 															// sur un null au final
@@ -69,34 +79,62 @@ public class HashMap<K, V> implements Map<K, V> {
 				}
 
 			}
-			this.bucket = newBucket ;// affectation du newBucket resizer
+			this.bucket = newBucket;// affectation du newBucket resizer
 
 		}
-		return null; // no previous mapping with the key 
+		return null; // no previous mapping with the key
 
 	}
 
 	@Override
 	public V remove(Object key) {
-		// TODO Auto-generated method stub
+
+		if (key != null) {
+			int hash = hash(key.hashCode());
+			int index = indexFor(hash);
+			int i = 0;
+			Bucket<K, V> prev = this.bucket[index];
+			Bucket<K, V> elem = this.bucket[index];
+			while (elem != null) { // si on n'est pas a la fin de la linkedList
+
+				if (elem.key.equals(key)) {
+					if (i == 0) { // element tout au debut de la linkedList
+						this.bucket[index] = elem.next;
+					} else
+						prev.next = elem.next;
+					--size;
+					return elem.value;
+
+				} else {
+					prev = elem;
+					elem = elem.next;
+
+				}
+				++i;
+			}
+
+		}
 		return null;
+
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	static class Bucket<K, V> {
 		K key;
 		V value;
 		Bucket<K, V> next; // linkedlist
+		final int hash;
 
-		Bucket(K key, V value, Bucket<K, V> n) {
+		Bucket(K key, V value, Bucket<K, V> n, int h) {
 			this.key = key;
 			this.value = value;
 			this.next = n;
+			this.hash = h; // pour garder en memoire lors du transfer ( la fonction du calcul d'index a
+							// partir du hash change suite au changement de la taille)
 		}
 
 		public K getKey() {
@@ -144,6 +182,5 @@ public class HashMap<K, V> implements Map<K, V> {
 	public void setBucket(Bucket[] bucket) {
 		this.bucket = bucket;
 	}
-	
-	
+
 }
