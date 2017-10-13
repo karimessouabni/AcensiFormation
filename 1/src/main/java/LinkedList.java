@@ -1,57 +1,90 @@
 
 public class LinkedList<E> implements List<E> {
 
-	
-	 private  Entree<E> entree1 = new Entree<E>(null, null, null);
-	 private int size ;
-	 
-	 
-	 
-	 
+	private Entree<E> entree1 ;
+	private int size;
+
 	public LinkedList() {
-//		entree1.elmAvant = entree1.elemApres = entree1;
-		this.size = 0 ; 
+		this.size = 0;
+		entree1 = new Entree<E>(null, null, null);
 	}
 
 	@Override
-	public boolean add(E e) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean add(E e) throws Exception {
+		this.add(size, e);
+		return true;
 	}
 
 	@Override
 	public void add(int index, E element) throws Exception {
-		Entree<E> refElem = entree1; 
-		if (index>size || index <0)  {
+		Entree<E> refElem = entree1;
+		if (index > size || index < 0) {
 			throw new Exception("faux index !!");
-		}else if (index == 0) { // ajout au debut  refElem = premier 
+		} else if (index == 0) { // ajout au debut refElem = premier
 			Entree<E> nouvellEntree = new Entree<E>(element, entree1, null);
-			refElem.elmAvant = nouvellEntree ;
-			entree1 = nouvellEntree ;
+			refElem.elmAvant = nouvellEntree;
+			entree1 = nouvellEntree;
 			size++;
+
+		} else { // ajout a la fin refElem = dernier
+
+//			while (--index > 0) {
+//				refElem = refElem.elemApres;
+//			}
+			Entree<E> elemApres =  getElem(index) ; 
+			Entree<E> elemAvant = getElem(--index) ; 
 			
-		}else  { // ajout a la fin refElem = dernier
 			
-			while( --index > 0 ) {
-				refElem = refElem.elemApres;
-			}
-			Entree<E> nouvellEntree = new Entree<E>(element, refElem.elemApres, refElem);
-			refElem.elemApres = nouvellEntree;
-			size++ ;
-		} 
-		
+			Entree<E> nouvellEntree = new Entree<E>(element, elemApres, elemAvant);
+			elemAvant.elemApres = nouvellEntree ; 
+			elemApres.elmAvant = nouvellEntree;
+			
+//			refElem.elemApres = nouvellEntree;
+//			nouvellEntree.elemApres.elmAvant = nouvellEntree;
+			size++;
+		}
+
 	}
 
 	@Override
 	public E get(int index) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Entree<E> refElem = entree1;
+		while (--index >= 0) {
+			refElem = refElem.elemApres;
+		}
+		return refElem.value;
+	}
+
+	public Entree<E> getElem(int index) throws Exception {
+		Entree<E> refElem = entree1;
+		while (--index >= 0) {
+			refElem = refElem.elemApres;
+		}
+		return refElem;
 	}
 
 	@Override
 	public E remove(int index) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Entree<E> refElem = entree1;
+		Entree<E> valToreturn = null;
+		if (index > size || index < 0) {
+			throw new Exception("faux index !!");
+		} else if (index == 0) {
+			valToreturn = entree1 ; 
+			entree1.elemApres.elmAvant = null;
+			entree1 = entree1.elemApres;
+			size--;
+			return valToreturn.value;
+		} else {
+			refElem = getElem(index);
+			valToreturn = refElem; 
+			refElem.elmAvant.elemApres = refElem.elemApres;
+			refElem.elemApres.elmAvant = refElem.elmAvant;
+			refElem.elemApres = null;
+			refElem.elmAvant = null;
+			size--;
+			return valToreturn.value;
+		}
 	}
 
 	@Override
@@ -64,24 +97,21 @@ public class LinkedList<E> implements List<E> {
 	public int size() {
 		return size;
 	}
-	
-	
-	static class Entree<E> {
-		
-		E value ;
-		Entree<E> elmAvant ; 
-		Entree<E> elemApres ; 
-		
-		
-		Entree(E elem, Entree<E> elemApres, Entree<E> elmAvant) {
-			
-			this.value = elem ; 
-			this.elmAvant = elmAvant ;
-			this.elemApres = elemApres ;
-		}
-		
-	}
 
+	static class Entree<E> {
+
+		E value;
+		Entree<E> elmAvant;
+		Entree<E> elemApres;
+
+		Entree(E elem, Entree<E> elemApres, Entree<E> elmAvant) {
+
+			this.value = elem;
+			this.elmAvant = elmAvant;
+			this.elemApres = elemApres;
+		}
+
+	}
 
 	public Entree<E> getEntree1() {
 		return entree1;
@@ -91,7 +121,4 @@ public class LinkedList<E> implements List<E> {
 		this.entree1 = entree1;
 	}
 
-
-	
-	
 }

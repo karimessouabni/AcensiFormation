@@ -1,8 +1,8 @@
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.LinkedList;;
+import java.util.LinkedList;
+import java.util.Map;;
 
 /**
  * Hello world!
@@ -37,12 +37,13 @@ public class App {
 		map.put("j", "java");
 		String valeur = new String("AA");
 
-		LinkedList l = new LinkedList();
-		l.add("01");
-		l.add("02");
-		l.add(null);
-		l.add(01, "0002");
-		System.out.println(l);
+		LinkedList liste = new LinkedList();
+		liste.add(0, "elem0"); // 2de
+		liste.add(1, "elem1"); // 4d
+		liste.add(2, "elem2"); /// 5th
+		liste.add(0, "elem00"); // 1st
+		liste.add(2, "willgetThe3dplace");
+		System.out.println(liste);
 
 	}
 
