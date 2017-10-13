@@ -20,17 +20,13 @@ public class LinkedList<E> implements List<E> {
 		Entree<E> refElem = entree1;
 		if (index > size || index < 0) {
 			throw new Exception("faux index !!");
-		} else if (index == 0) { // ajout au debut refElem = premier
+		} else if (index == 0) { // ajout au debut refElem = premier -> le plus optimal O(1)
 			Entree<E> nouvellEntree = new Entree<E>(element, entree1, null);
 			refElem.elmAvant = nouvellEntree;
 			entree1 = nouvellEntree;
 			size++;
 
 		} else { // ajout a la fin refElem = dernier
-
-//			while (--index > 0) {
-//				refElem = refElem.elemApres;
-//			}
 			Entree<E> elemApres =  getElem(index) ; 
 			Entree<E> elemAvant = getElem(--index) ; 
 			
@@ -38,9 +34,6 @@ public class LinkedList<E> implements List<E> {
 			Entree<E> nouvellEntree = new Entree<E>(element, elemApres, elemAvant);
 			elemAvant.elemApres = nouvellEntree ; 
 			elemApres.elmAvant = nouvellEntree;
-			
-//			refElem.elemApres = nouvellEntree;
-//			nouvellEntree.elemApres.elmAvant = nouvellEntree;
 			size++;
 		}
 
