@@ -7,7 +7,8 @@ import java.io.File;
  *         pour tout nœud s de a, les contenus des nœuds du sous-arbre gauche de
  *         s sont strictement inférieurs au contenu de s, et que les contenus
  *         des nœuds du sous-arbre droit de s sont strictement supérieurs au
- *         contenu de s
+ *         contenu de 
+ *         plus d'info sur http://gallium.inria.fr/~maranget/X/421/poly/arbre-bin.html
  * @param <E>
  */
 public class Abr<E extends Comparable<E>> implements IAbr<E> {
