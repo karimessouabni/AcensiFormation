@@ -48,6 +48,16 @@ public class LinkedList<E> implements List<E> {
 		return refElem.value;
 	}
 
+	public E getWithRecursivite(int index) throws Exception {
+		return this.getForRecursive(index,entree1 );
+	}
+	
+	public E getForRecursive(int index, Entree<E> refElem) throws Exception {
+		if(index==0)
+			return refElem.value;
+		return getForRecursive(--index, refElem.elemApres);
+	}
+	
 	public Entree<E> getElem(int index) throws Exception {
 		Entree<E> refElem = entree1;
 		while (--index >= 0) {

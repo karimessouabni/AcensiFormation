@@ -11,7 +11,7 @@ public class LinkedListTest extends TestCase {
 		liste.add(0, "elem0"); // 2de
 		liste.add(1, "elem1"); // 4d
 		liste.add(2, "elem2"); /// 5th
-		liste.add(0, "elem00"); // 1st
+		liste.add(0, "elem00"); // 1str
 		liste.add(2, "willgetThe3dplace"); // 3th
 		Assert.assertEquals(liste.size(), 5);
 		Assert.assertEquals(liste.getEntree1().value, "elem00");
@@ -34,6 +34,12 @@ public class LinkedListTest extends TestCase {
 		Assert.assertEquals(liste.get(2), "elem2");
 		Assert.assertEquals(liste.get(3), "elem3");
 		Assert.assertEquals(liste.get(4), "elem4");
+		
+		Assert.assertEquals(liste.getWithRecursivite(0), "elem0"); // pourquoi Java Doc n'utilise pas de recursivité ? 
+		Assert.assertEquals(liste.getWithRecursivite(1), "elem1");
+		Assert.assertEquals(liste.getWithRecursivite(2), "elem2");
+		Assert.assertEquals(liste.getWithRecursivite(3), "elem3");
+		Assert.assertEquals(liste.getWithRecursivite(4), "elem4");
 
 	}
 
