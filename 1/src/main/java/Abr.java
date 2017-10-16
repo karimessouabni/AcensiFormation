@@ -7,8 +7,8 @@ import java.io.File;
  *         pour tout nœud s de a, les contenus des nœuds du sous-arbre gauche de
  *         s sont strictement inférieurs au contenu de s, et que les contenus
  *         des nœuds du sous-arbre droit de s sont strictement supérieurs au
- *         contenu de 
- *         plus d'info sur http://gallium.inria.fr/~maranget/X/421/poly/arbre-bin.html
+ *         contenu de plus d'info sur
+ *         http://gallium.inria.fr/~maranget/X/421/poly/arbre-bin.html
  * @param <E>
  */
 public class Abr<E extends Comparable<E>> implements IAbr<E> {
@@ -24,6 +24,14 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 
 	}
 
+	/**
+	 * Ajouter un noeud a la fin d'une branche de l'arbre d'une maniere que tout les
+	 * filsG/D sous </> que le noeud principale
+	 * 
+	 * @param n
+	 * @param e
+	 * @return
+	 */
 	@Override
 	public boolean add(E e) {
 		if (size() == 0) {
@@ -41,7 +49,7 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 		if (n.value.compareTo(e) > 0) {
 			if (n.noeudG != null)
 				return addR(n.noeudG, e);
-			else {
+			else { // creation d'une feuille
 				n.noeudG = new Noeud<E>(e);
 				size++;
 				return true;
@@ -49,16 +57,17 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 		} else if (n.value.compareTo(e) < 0) {
 			if (n.noeudD != null)
 				return addR(n.noeudD, e);
-			else {
+			else { // creation d'une feuille
 				n.noeudD = new Noeud<E>(e);
 				size++;
 				return true;
 			}
-		} else
+		} else // pas de doublon
 			return false;
 
 	}
 
+	
 	public int getHauteur() {
 		return this.hauteur(this.noeud1);
 	}
@@ -82,13 +91,13 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 		if (e.compareTo(n.value) == 0)
 			return true;
 		else if (e.compareTo(n.value) > 0) { // chercher dans le s-ABRD
-			if (n.noeudD != null)
+			if (n.noeudD != null) 
 				return recursiveFind(n.noeudD, e);
-			return false;
+			return false; // arrivé au dernier noeud de l'arbre
 		} else {
 			if (n.noeudG != null)
 				return recursiveFind(n.noeudG, e);
-			return false;
+			return false; // arrivé au dernier noeud de l'arbre
 		}
 	}
 
@@ -100,9 +109,9 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 
 	public Noeud<E> recursiveRemove(Noeud<E> n, E e) {
 		if (n == null)
-			return n;
+			return n; // il y est pas 
 		if (e.compareTo(n.value) == 0)
-			return removeNoeud(n);
+			return removeNoeud(n); // une fois trouver on supprime le noeud
 		if (e.compareTo(n.value) < 0)
 			n.noeudG = recursiveRemove(n.noeudG, e);
 		else
@@ -116,8 +125,11 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 			return n.noeudD; // return null si feuille (ND == null aussi)
 		else if (n.noeudD == null)
 			return n.noeudG;// return null si feuille (NG == null aussi)
+		//( on fait le noeid file a la place du pere supprimé) 
+		
+		
 		// 2 : si n a deux S-noeud G D: on a donc le choix de prendre un
-		// remplacant du S-arbreG ou S-arbreD
+		// remplacant du S-arbreG ou S-arbreD 
 
 		else {
 			Noeud<E> tete = findRemplacant(n.noeudD);
@@ -132,7 +144,7 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 	}
 
 	/**
-	 * DGGG ou GDDD pour trouver un remplacant qui respecte l'ABR
+	 * DGGG ou GDDD h fois pour trouver un remplacant qui respecte l'ABR
 	 * 
 	 * @param n
 	 * @return
@@ -185,19 +197,19 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 	}
 
 	public void parcoursLargeur() throws Exception {
-	
+
 		ArrayList<Noeud<E>> tab = new ArrayList<>(); // FIFO
 		tab.add(this.noeud1);
-		while(tab.size()>0){
+		while (tab.size() > 0) {
 			Noeud<E> n = tab.get(0);
 			tab.remove(0);
-			System.out.print(n.value+ " ");
-			if(n.noeudG != null ) tab.add(n.noeudG);
-			if(n.noeudD != null ) tab.add(n.noeudD);
+			System.out.print(n.value + " ");
+			if (n.noeudG != null)
+				tab.add(n.noeudG);
+			if (n.noeudD != null)
+				tab.add(n.noeudD);
 		}
-		
-		
-		
+
 	}
 
 	public int size() {
@@ -226,20 +238,12 @@ public class Abr<E extends Comparable<E>> implements IAbr<E> {
 
 		//
 		public String toStringS() {
-			String gStr = (noeudG != null && noeudG.value != null ? noeudG.value
-					+ ""
-					: "");
-			String dStr = (noeudD != null && noeudD.value != null ? noeudD.value
-					+ ""
-					: "");
+			String gStr = (noeudG != null && noeudG.value != null ? noeudG.value + "" : "");
+			String dStr = (noeudD != null && noeudD.value != null ? noeudD.value + "" : "");
 			return gStr + "-[" + value + "]-" + dStr;
 
 		}
 
-		
-		
-	
-		
 		@Override
 		public String toString() {
 			if (value == null)

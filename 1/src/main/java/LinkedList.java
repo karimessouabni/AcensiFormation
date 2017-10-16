@@ -9,12 +9,23 @@ public class LinkedList<E> implements List<E> {
 		entree1 = new Entree<E>(null, null, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see List#add(java.lang.Object)
+	 * 
+	 * Complextié = O(n) = Ajout a la fin 
+	 * A change pour O(1) Ajout au debut de la linkedList....
+	 */
 	@Override
 	public boolean add(E e) throws Exception {
 		this.add(size, e);
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see List#add(int, java.lang.Object)
+	 * 
+	 * Complexité entre O(1) et O(n)==complexité du get
+	 */
 	@Override
 	public void add(int index, E element) throws Exception {
 		Entree<E> refElem = entree1;
@@ -39,6 +50,10 @@ public class LinkedList<E> implements List<E> {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see List#get(int
+	 * Complexité = O(n) 
+	 */
 	@Override
 	public E get(int index) throws Exception {
 		Entree<E> refElem = entree1;
@@ -58,6 +73,12 @@ public class LinkedList<E> implements List<E> {
 		return getForRecursive(--index, refElem.elemApres);
 	}
 	
+	/**
+	 * @param index
+	 * @return
+	 * @throws Exception
+	 * Complexité = O(n) en generale = pire des cas 
+	 */
 	public Entree<E> getElem(int index) throws Exception {
 		Entree<E> refElem = entree1;
 		while (--index >= 0) {
@@ -66,6 +87,11 @@ public class LinkedList<E> implements List<E> {
 		return refElem;
 	}
 
+	/* (non-Javadoc)
+	 * @see List#remove(int)
+	 * Complexité = O(1) si index ==0 O(n) en generale 
+	 * O(n) depuis le get 
+	 */
 	@Override
 	public E remove(int index) throws Exception {
 		Entree<E> refElem = entree1;
