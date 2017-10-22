@@ -4,6 +4,6 @@ public interface IRateRepository {
 
 	void parseAllRates(String f);
 
-	double getRate(Date d);
+	Rate getRate(String d);
 
 }
