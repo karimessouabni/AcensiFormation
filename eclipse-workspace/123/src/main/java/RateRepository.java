@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 public class RateRepository implements IRateRepository {
 
 	String path;
-	HashMap<Date, Rate> ratesMap;
+	HashMap<Date, RateCurve> ratesMap;
 	Logger logger = Logger.getAnonymousLogger();
 	List<Integer> header = new ArrayList<Integer>();
+	Integer maxHeaderValue = 0 ;
 
 	public RateRepository(String path) {
 		this.path = path;
@@ -33,7 +34,7 @@ public class RateRepository implements IRateRepository {
 
 	}
 
-	@Override
+
 	public void parseAllRates(String path) {
 
 		ratesMap = new HashMap<>();
@@ -56,9 +57,8 @@ public class RateRepository implements IRateRepository {
 
 	}
 
-	private Function<String, Rate> mapToItem = (line) -> {
-		String[] p = line.split(";");// a CSV has comma separated lines
-		// Rate item = new Rate();
+	private Function<String, RateCurve> mapToItem = (line) -> {
+		String[] p = line.split(";");
 		Date dateformated = null;
 		try {
 			dateformated = formatDate(p[0]);
@@ -73,8 +73,7 @@ public class RateRepository implements IRateRepository {
 			for (int i = 1; i <= this.header.size(); i++) {
 				values.put(this.header.get(i - 1), Double.valueOf(p[i]));
 			}
-		// more initialization goes here
-		return new Rate(dateformated, values);
+		return new RateCurve(dateformated, values, maxHeaderValue);
 	};
 
 	private void getHeader(String line) {
@@ -82,9 +81,12 @@ public class RateRepository implements IRateRepository {
 		for (String s : p) {
 			int start = s.indexOf('C') + 1;
 			int end = s.indexOf('Y');
-			if (start != 0 || end != -1)
-				this.header.add(Integer.valueOf(s.substring(start, end)));
+			if (start != 0 || end != -1) {
+				Integer headerValue = Integer.valueOf(s.substring(start, end)) ;
+				this.header.add(headerValue);
+				this.maxHeaderValue = (this.maxHeaderValue < headerValue)? headerValue : maxHeaderValue ;
 
+			}
 		}
 
 	}
@@ -101,7 +103,7 @@ public class RateRepository implements IRateRepository {
 	 * O(1) complexity to get a Rate by its date
 	 */
 	@Override
-	public Rate getRate(String d) {
+	public RateCurve getRate(String d) {
 
 		try {
 			return this.ratesMap.get(parseDate(d));
@@ -121,7 +123,7 @@ public class RateRepository implements IRateRepository {
 	
 	}
 
-	private Consumer<Rate> getRate = (line) -> {
+	private Consumer<RateCurve> getRate = (line) -> {
 
 	};
 }

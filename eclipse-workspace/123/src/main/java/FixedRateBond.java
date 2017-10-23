@@ -10,4 +10,10 @@ public class FixedRateBond extends Bond{
 		super.value = value;
 	}
 
+	public FixedRateBond() {
+		
+	}
+	
+	
+
 }
