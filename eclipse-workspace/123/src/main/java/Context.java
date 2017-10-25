@@ -8,7 +8,7 @@ public class Context {
 		this.pricer = pricer;
 	}
 
-	public Double executePricer(Date pricingDate) {
+	public Double executePricer(Date pricingDate) throws Exception {
 		return pricer.priceFinancialAsset(pricingDate);
 	}
 

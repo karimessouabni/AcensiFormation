@@ -2,7 +2,7 @@ import java.util.Date;
 
 public interface Pricer {
 
-	Double priceFinancialAsset(Date pricingDate) ;
+	Double priceFinancialAsset(Date pricingDate)  ;
 
 
 }

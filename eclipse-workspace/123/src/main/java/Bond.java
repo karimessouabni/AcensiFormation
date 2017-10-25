@@ -4,8 +4,8 @@ import java.util.Date;
 public abstract class Bond implements FinancialAsset {
 
 	protected Date emissionDate;
-	protected Date maturity; // date d'echeance
-	protected int periodicity; // nombre de mois
+	protected int maturity; // years number
+	protected int periodicity; // month number 
 	protected Double coupon;
 	protected Double value;
 
@@ -17,11 +17,11 @@ public abstract class Bond implements FinancialAsset {
 		this.emissionDate = emissionDate;
 	}
 
-	public Date getMaturity() {
+	public int getMaturity() {
 		return maturity;
 	}
 
-	public void setMaturity(Date maturity) {
+	public void setMaturity(int maturity) {
 		this.maturity = maturity;
 	}
 
@@ -48,6 +48,13 @@ public abstract class Bond implements FinancialAsset {
 	public void setValue(Double value) {
 		this.value = value;
 	}
+	
+	public Date getDateBondEnds() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(emissionDate);
+		cal.add(Calendar.MONTH, 12*maturity);
+		return cal.getTime();
+	}
 
 	public Date nextFlux(Date date) throws Exception {
 
@@ -60,7 +67,7 @@ public abstract class Bond implements FinancialAsset {
 			nextFlux = cal.getTime();
 
 		}
-		if (nextFlux.after(maturity))
+		if (nextFlux.after(getDateBondEnds()))
 			throw new Exception("Date de nextFlux erronée !!");
 		return nextFlux;
 	}

@@ -103,25 +103,15 @@ public class RateRepository implements IRateRepository {
 	 * O(1) complexity to get a Rate by its date
 	 */
 	@Override
-	public RateCurve getRate(String d) {
+	public RateCurve getRate(Date d) {
 
-		try {
-			return this.ratesMap.get(parseDate(d));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return this.ratesMap.get(d);
+		
 
 	}
 	
 	
 
-	public static final Date parseDate(String date) throws ParseException{
-		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	return simpleDateFormat.parse(date);
-	
-	}
 
 	private Consumer<RateCurve> getRate = (line) -> {
 

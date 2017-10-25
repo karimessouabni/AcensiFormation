@@ -1,5 +1,7 @@
+import java.util.Date;
+
 public interface IRateRepository {
 
-	RateCurve getRate(String d);
+	RateCurve getRate(Date d);
 
 }
